@@ -25,6 +25,7 @@ def estimate_forward_dividend_yield(sym):
         return forward_dividend_yield * 100
     except:
         print(sym, "error")
+        return 0.0
 
 def filter_dividends_four_months(dividends):
     today = datetime.now(pytz.timezone('America/New_York'))
@@ -46,6 +47,7 @@ def get_dividend_cagr(symbol):
         dividends = filter_dividends_five_years(stock.dividends)
         if len(dividends) < 2:
             return 0.0
+        # need to account for potential different dividend periods, so need to group dividends by year
         dividend_growth = (dividends.iloc[-1] / dividends.iloc[0]) ** (1 / (len(dividends)/4))
         return (dividend_growth - 1) * 100
     except:
@@ -62,11 +64,13 @@ def recommend_stocks(symbols):
         dividend_cagr = get_dividend_cagr(symbol)
 
         if forward_div_yield > 3 and dividend_cagr > 10:
-            print(f"Buy {symbol}%")
+            print(f"Buy {symbol}")
         elif forward_div_yield <= 1 or dividend_cagr < 5:
-            print(f"Sell {symbol}%")
-
+            print(f"Sell {symbol}")
+        else:
+            continue
         print (f"Forward Dividend Yield: {forward_div_yield}%, 5-year Dividend CAGR: {dividend_cagr}%")
+
 # Read symbols from file and populate the list
 symbols_file = 'symbols.txt'
 symbols = []
