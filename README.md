@@ -13,7 +13,7 @@ Buy Rules
 
 AND
 
-2) If its 5-year dividend CAGR is above 10%
+2) If its 5-year dividend CAGR is above 9.5%
 
 
 
