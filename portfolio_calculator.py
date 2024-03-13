@@ -90,19 +90,24 @@ def get_dividend_cagr(symbol):
         print(symbol, "Error")
         return 0.0
     
-def write_sell_and_buy(buy_stocks, sell_stocks):
+def write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks):
     with open("buy_stocks.txt", 'w') as buystockFile:
         for symbol in buy_stocks:
-            buystockFile.write(f"{symbol} - Fdv = {buy_stocks[symbol]["forward_div_yield"]}% 5y d CAGR = {buy_stocks[symbol]["dividend_cagr"]}%\n")
+            buystockFile.write(f"{symbol} - Fdv = {buy_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {buy_stocks[symbol]['dividend_cagr']}%\n")
 
     with open("sell_stocks.txt", 'w') as sellstockFile:
         for symbol in sell_stocks:
-            sellstockFile.write(f"{symbol} - Fdv = {sell_stocks[symbol]["forward_div_yield"]}% 5y d CAGR = {sell_stocks[symbol]["dividend_cagr"]}%\n")
+            sellstockFile.write(f"{symbol} - Fdv = {sell_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {sell_stocks[symbol]['dividend_cagr']}%\n")
+
+    with open("hold_stocks.txt", 'w') as holdstockFile:
+        for symbol in hold_stocks:
+            holdstockFile.write(f"{symbol} - Fdv = {hold_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {hold_stocks[symbol]['dividend_cagr']}%\n")
 
 def recommend_stocks(symbols):
     stock_data = {}
     buy_stocks = {}
     sell_stocks = {}
+    hold_stocks = {}
     for symbol in symbols:
         
         stock_data[symbol] = yf.Ticker(symbol).info
@@ -112,7 +117,7 @@ def recommend_stocks(symbols):
         forward_div_yield = estimate_forward_dividend_yield(symbol)
         dividend_cagr = get_dividend_cagr(symbol)
 
-        if forward_div_yield > 3 and dividend_cagr > 10:
+        if forward_div_yield > 3 and dividend_cagr > 9.5:
             print(f"Buy {symbol}")
             buy_stocks[symbol] = {}
             buy_stocks[symbol]["forward_div_yield"] = forward_div_yield
@@ -123,10 +128,13 @@ def recommend_stocks(symbols):
             sell_stocks[symbol]["forward_div_yield"] = forward_div_yield
             sell_stocks[symbol]["dividend_cagr"] = dividend_cagr
         else:
-            continue
+            print(f"Hold {symbol}")
+            hold_stocks[symbol] = {}
+            hold_stocks[symbol]["forward_div_yield"] = forward_div_yield
+            hold_stocks[symbol]["dividend_cagr"] = dividend_cagr
         print (f"Forward Dividend Yield: {forward_div_yield}%, 5-year Dividend CAGR: {dividend_cagr}%")
 
-    write_sell_and_buy(buy_stocks, sell_stocks)
+    write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks)
 
 # Read symbols from file and populate the list
 symbols_file = 'symbols.txt'
