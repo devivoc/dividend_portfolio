@@ -2,6 +2,7 @@ import yfinance as yf
 from datetime import datetime, timedelta
 import pytz
 import statistics
+import pandas as pd
 
 def get_dividend_data(symbols):
     dividend_data = {}
@@ -44,8 +45,6 @@ def get_dividend_count_per_year(dividends):
 
     per_year_avg = statistics.mode(year_counts.values())
     per_year = round(per_year_avg)
-    if per_year != 4:
-        x = 0
 
     return per_year
 
@@ -58,7 +57,7 @@ def filter_dividends_four_months(dividends):
 
 def filter_dividends_five_years(dividends):
     today = datetime.now(pytz.timezone('America/New_York'))
-    five_years_ago = today - timedelta(days=365 * 5)
+    five_years_ago = today - timedelta(days=365 * 6)
 
     filtered_dividends = dividends[dividends.index >= five_years_ago]
     return filtered_dividends
@@ -71,20 +70,25 @@ def get_dividend_cagr(symbol):
         dividends = filter_dividends_five_years(dividends)
         div_per_year = get_dividend_count_per_year(dividends) 
 
+        df = pd.DataFrame(dividends)
+        div_dict = df.to_dict()
+
         if dividends.empty or div_per_year == 0:
             return 0.0
         
         if len(dividends) / div_per_year < 4:
             return 0.0
         
-        # need to account for potential different dividend periods, so need to group dividends by year
+        # need to account for potential different dividend periods, 
+        # so need to group dividends by year
+        
         recent_div_year = sum(dividends.iloc[-div_per_year:])
         original_div_year = sum(dividends.iloc[:div_per_year])
 
         most_recent_div = dividends.iloc[-1]
         oldest_div = dividends.iloc[0]
 
-        dividend_growth = (most_recent_div / oldest_div) ** (1 / (len(dividends)/div_per_year))
+        dividend_growth = (recent_div_year / original_div_year) ** (1 / ((len(dividends) - div_per_year)/div_per_year))
         return (dividend_growth - 1) * 100
     except:
         print(symbol, "Error")
@@ -113,11 +117,11 @@ def recommend_stocks(symbols):
         stock_data[symbol] = yf.Ticker(symbol).info
         # for some reason once isnt enough
         stock = yf.Ticker(symbol) 
-
+  
         forward_div_yield = estimate_forward_dividend_yield(symbol)
         dividend_cagr = get_dividend_cagr(symbol)
 
-        if forward_div_yield > 3 and dividend_cagr > 9.5:
+        if forward_div_yield > 2.9 and dividend_cagr > 9.5:
             print(f"Buy {symbol}")
             buy_stocks[symbol] = {}
             buy_stocks[symbol]["forward_div_yield"] = forward_div_yield

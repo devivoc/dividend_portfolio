@@ -1,0 +1,40 @@
+## 03.14.2024
+
+# buy 
+
+AMT 
+BBY 
+BX 
+CAG 
+CTRA 
+DRI 
+DVN 
+FANG 
+EXR ** NOT ON WEALTHFRONT
+FITB 
+HPQ 
+INVH ** NOT ON WEALTHFRONT
+MS 
+NEE 
+PXD 
+PNC 
+RF 
+TROW 
+TXN 
+UPS 
+
+
+## 06.06.2024
+
+# buy
+
+PAYX
+FMC
+SWKS
+RHI
+TGT
+
+# sell
+
+HBAN
+XOM
