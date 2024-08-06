@@ -34,6 +34,6 @@ OR
 
 Notes:
 
-CAGR calculation here takes the most recent quarterly* dividend and the quarterly dividend from 5 years ago. Charles Schwab will report CAGR where the V_final or result dividend is the sum total of the dividends in the past complete calendar year. It does not take the most recent quarters into consideration. It is essential to use this algo as the truth and not Schwab, because significant price drops in stocks should affect CAGR.
+CAGR calculation here takes into account the most recent quarterly* dividends. For example, if we are in Q3, the CAGR calculation will include Y4Q3-Y5Q2. Charles Schwab will report CAGR where the V_final/result dividend is the sum total of the dividends in the past COMPLETE CALENDAR year (so Y4Q1-Y4Q4). It does not take the most recent quarters into consideration. This algo is used as the source of truth and not Schwab, because recent price changes in stocks should affect CAGR.
 
 *the algo will deduce the dividend calendar, quarterly is the most common

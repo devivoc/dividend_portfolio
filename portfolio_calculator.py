@@ -88,7 +88,7 @@ def get_dividend_cagr(symbol):
         most_recent_div = dividends.iloc[-1]
         oldest_div = dividends.iloc[0]
 
-        dividend_growth = (recent_div_year / original_div_year) ** (1 / ((len(dividends) - div_per_year)/div_per_year))
+        dividend_growth = (most_recent_div / oldest_div) ** (1 / (len(dividends)/div_per_year))
         return (dividend_growth - 1) * 100
     except:
         print(symbol, "Error")
