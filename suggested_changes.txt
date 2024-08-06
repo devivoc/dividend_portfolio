@@ -1,0 +1,42 @@
+# Buy these stocks
+
+EOG
+CME
+MOS
+WRB
+
+# Hold these stocks
+
+CAG
+TROW
+DVN
+PNC
+AMT
+FMC
+BX
+DRI
+AMGN
+UPS
+BBY
+EMN
+TGT
+INVH
+COP
+PAYX
+CTRA
+ABBV
+PLD
+FANG
+NTRS
+FITB
+NEE
+RF
+HPQ
+SWKS
+MS
+EXR
+TXN
+
+# These stocks left the S&P 500 :(
+
+RHI

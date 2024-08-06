@@ -57,7 +57,7 @@ def filter_dividends_four_months(dividends):
 
 def filter_dividends_five_years(dividends):
     today = datetime.now(pytz.timezone('America/New_York'))
-    five_years_ago = today - timedelta(days=365 * 6)
+    five_years_ago = today - timedelta(days=365 * 6) # 5 years difference, 6 total years of data
 
     filtered_dividends = dividends[dividends.index >= five_years_ago]
     return filtered_dividends
@@ -85,10 +85,8 @@ def get_dividend_cagr(symbol):
         recent_div_year = sum(dividends.iloc[-div_per_year:])
         original_div_year = sum(dividends.iloc[:div_per_year])
 
-        most_recent_div = dividends.iloc[-1]
-        oldest_div = dividends.iloc[0]
-
-        dividend_growth = (most_recent_div / oldest_div) ** (1 / (len(dividends)/div_per_year))
+        # roll dividends into a year, includes most recent quarters
+        dividend_growth = (recent_div_year / original_div_year) ** (1 / ((len(dividends) - div_per_year)/div_per_year))
         return (dividend_growth - 1) * 100
     except:
         print(symbol, "Error")
@@ -106,6 +104,57 @@ def write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks):
     with open("hold_stocks.txt", 'w') as holdstockFile:
         for symbol in hold_stocks:
             holdstockFile.write(f"{symbol} - Fdv = {hold_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {hold_stocks[symbol]['dividend_cagr']}%\n")
+
+def suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks):
+    with open("current_portfolio.txt", 'r') as current_portfolio_file:
+        my_stocks = []
+        for stock in current_portfolio_file:
+            my_stocks.append(stock.strip())
+
+        buys = list(set(buy_stocks.keys())
+                    .difference(my_stocks))
+
+        holds = list(set(buy_stocks.keys())
+                     .union(hold_stocks.keys())
+                     .intersection(my_stocks))
+        
+        sells = list(set(sell_stocks.keys())
+                     .intersection(my_stocks))
+
+        non_stocks = list(set(my_stocks)
+                          .difference(set(buy_stocks.keys())
+                                      .union(sell_stocks.keys())
+                                      .union(hold_stocks.keys())))
+
+        new_portfolio = list(set(my_stocks)                             
+                             .difference(sell_stocks.keys())
+                             .intersection(hold_stocks.keys())
+                             .union(buy_stocks.keys()))
+
+        with open("suggested_changes.txt", 'w') as suggest_file:
+            if len(buys) > 0:
+                suggest_file.write("# Buy these stocks\n\n")                
+            for buy in buys:
+                suggest_file.write(f"{buy}\n")
+
+            if len(holds) > 0:
+                suggest_file.write("\n# Hold these stocks\n\n")
+            for hold in holds:
+                suggest_file.write(f"{hold}\n")
+
+            if len(sells) > 0:
+                suggest_file.write("\n# Sell these stocks\n\n")
+            for sell in sells:
+                suggest_file.write(f"{sell}\n")
+
+            if len(non_stocks) > 0:
+                suggest_file.write("\n# These stocks left the S&P 500 :(\n\n")
+            for ns in non_stocks:
+                suggest_file.write(f"{ns}\n")
+        
+        with open("suggested_portfolio.txt", 'w') as suggest_final:
+            for s in new_portfolio:
+                suggest_final.write(f"{s}\n")
 
 def recommend_stocks(symbols):
     stock_data = {}
@@ -139,6 +188,7 @@ def recommend_stocks(symbols):
         print (f"Forward Dividend Yield: {forward_div_yield}%, 5-year Dividend CAGR: {dividend_cagr}%")
 
     write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks)
+    suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks)
 
 # Read symbols from file and populate the list
 symbols_file = 'symbols.txt'

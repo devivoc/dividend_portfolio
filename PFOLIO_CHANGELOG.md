@@ -1,6 +1,104 @@
+## 08.05.2024
+
+# buy
+
+EOG
+CME
+MOS
+WRB
+
+# sell
+
+RHI
+
+# current positions
+
+CAG
+TROW
+DVN
+PNC
+AMT
+FMC
+BX
+DRI
+AMGN
+EOG
+UPS
+BBY
+EMN
+MOS
+TGT
+INVH
+COP
+PAYX
+CTRA
+ABBV
+PLD
+FANG
+NTRS
+CME
+WRB
+NEE
+FITB
+RF
+HPQ
+SWKS
+MS
+EXR
+TXN
+
+## 06.06.2024
+
+# buy
+
+PAYX
+FMC
+SWKS
+RHI
+TGT
+
+# sell
+
+HBAN
+PXD
+XOM
+
+# current positions
+
+PAYX
+FMC
+SWKS
+RHI
+TGT
+AMT 
+BBY 
+BX 
+CAG 
+CTRA 
+DRI 
+DVN 
+FANG 
+EXR
+FITB 
+HPQ 
+INVH
+MS 
+NEE
+PNC 
+RF 
+TROW 
+TXN 
+UPS
+ABBV
+AMGN
+COP
+EMN
+NTRS
+PLD
+
 ## 03.14.2024
 
-# buy 
+# buy algo
 
 AMT 
 BBY 
@@ -16,25 +114,51 @@ HPQ
 INVH ** NOT ON WEALTHFRONT
 MS 
 NEE 
-PXD 
+PXD
 PNC 
 RF 
 TROW 
 TXN 
-UPS 
+UPS
 
+# bought due to schwab research
 
-## 06.06.2024
-
-# buy
-
-PAYX
-FMC
-SWKS
-RHI
-TGT
-
-# sell
-
+ABBV
+AMGN
+COP
+EMN
 HBAN
+NTRS
+PLD
+XOM
+
+# current positions
+
+AMT 
+BBY 
+BX 
+CAG 
+CTRA 
+DRI 
+DVN 
+FANG 
+EXR ** NOT ON WEALTHFRONT
+FITB 
+HPQ 
+INVH ** NOT ON WEALTHFRONT
+MS 
+NEE 
+PXD
+PNC 
+RF 
+TROW 
+TXN 
+UPS
+ABBV
+AMGN
+COP
+EMN
+HBAN
+NTRS
+PLD
 XOM

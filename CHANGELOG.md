@@ -1,3 +1,8 @@
+08/05/2024
+
+- add suggestion files for explicit changes in portfolio
+- correct discrepancy between portfolio changelog and actual portfolio
+
 06/06/2024
 
 - First rebalancing, buy, sell, and hold stock files were added for this specific date

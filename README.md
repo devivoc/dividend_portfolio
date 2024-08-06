@@ -37,3 +37,5 @@ Notes:
 CAGR calculation here takes into account the most recent quarterly* dividends. For example, if we are in Q3, the CAGR calculation will include Y4Q3-Y5Q2. Charles Schwab will report CAGR where the V_final/result dividend is the sum total of the dividends in the past COMPLETE CALENDAR year (so Y4Q1-Y4Q4). It does not take the most recent quarters into consideration. This algo is used as the source of truth and not Schwab, because recent price changes in stocks should affect CAGR.
 
 *the algo will deduce the dividend calendar, quarterly is the most common
+
+Some stocks in the position were purchased March 17 2024 due to research using the Charles Schwab research tool. I found this to be unhelpful due to the above note, but since they have not since reached the criteria of sell, they will remain in the portfolio
