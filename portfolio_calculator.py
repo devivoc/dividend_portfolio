@@ -4,6 +4,9 @@ import pytz
 import statistics
 import pandas as pd
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+
 def get_dividend_data(symbols):
     dividend_data = {}
 
@@ -15,7 +18,7 @@ def get_dividend_data(symbols):
     return dividend_data
 
 def estimate_forward_dividend_yield(sym):
-    stock = yf.Ticker(sym)
+    stock = yf.Ticker(sym) 
 
     try:
         dividends = stock.dividends
@@ -63,7 +66,8 @@ def filter_dividends_five_years(dividends):
     return filtered_dividends
 
 def get_dividend_cagr(symbol):
-    stock = yf.Ticker(symbol)
+    stock = yf.Ticker(symbol) 
+
     try:
         dividends = stock.dividends
         
@@ -153,42 +157,48 @@ def suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks):
                 suggest_file.write(f"{ns}\n")
         
         with open("suggested_portfolio.txt", 'w') as suggest_final:
+            new_portfolio = sorted(new_portfolio)
             for s in new_portfolio:
                 suggest_final.write(f"{s}\n")
 
-def recommend_stocks(symbols):
-    stock_data = {}
+def collect_recommendations(symbols, T):
     buy_stocks = {}
     sell_stocks = {}
     hold_stocks = {}
-    for symbol in symbols:
+    task_args = []
+    
+    with ThreadPoolExecutor(max_workers=T) as executor:
+        futures = [ executor.submit(recommend_stock, symbol, buy_stocks, sell_stocks, hold_stocks) for symbol in symbols ]
+            
+        for future in futures: 
+            _ = future.result(timeout=600/T)        
         
-        stock_data[symbol] = yf.Ticker(symbol).info
-        # for some reason once isnt enough
-        stock = yf.Ticker(symbol) 
-  
-        forward_div_yield = estimate_forward_dividend_yield(symbol)
-        dividend_cagr = get_dividend_cagr(symbol)
-
-        if forward_div_yield > 2.9 and dividend_cagr > 9.5:
-            print(f"Buy {symbol}")
-            buy_stocks[symbol] = {}
-            buy_stocks[symbol]["forward_div_yield"] = forward_div_yield
-            buy_stocks[symbol]["dividend_cagr"] = dividend_cagr
-        elif forward_div_yield <= 1 or dividend_cagr < 5:
-            print(f"Sell {symbol}")
-            sell_stocks[symbol] = {}
-            sell_stocks[symbol]["forward_div_yield"] = forward_div_yield
-            sell_stocks[symbol]["dividend_cagr"] = dividend_cagr
-        else:
-            print(f"Hold {symbol}")
-            hold_stocks[symbol] = {}
-            hold_stocks[symbol]["forward_div_yield"] = forward_div_yield
-            hold_stocks[symbol]["dividend_cagr"] = dividend_cagr
-        print (f"Forward Dividend Yield: {forward_div_yield}%, 5-year Dividend CAGR: {dividend_cagr}%")
 
     write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks)
     suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks)
+
+def recommend_stock(symbol, buy_stocks, sell_stocks, hold_stocks):
+  
+    forward_div_yield = estimate_forward_dividend_yield(symbol)
+    dividend_cagr = get_dividend_cagr(symbol)
+    decision = ""
+
+    if forward_div_yield > 2.9 and dividend_cagr > 9.5:
+        decision = f"Buy {symbol}"
+        buy_stocks[symbol] = {}
+        buy_stocks[symbol]["forward_div_yield"] = forward_div_yield
+        buy_stocks[symbol]["dividend_cagr"] = dividend_cagr
+    elif forward_div_yield <= 1 or dividend_cagr < 5:
+        decision = f"Sell {symbol}"
+        sell_stocks[symbol] = {}
+        sell_stocks[symbol]["forward_div_yield"] = forward_div_yield
+        sell_stocks[symbol]["dividend_cagr"] = dividend_cagr
+    else:
+        decision = f"Hold {symbol}"
+        hold_stocks[symbol] = {}
+        hold_stocks[symbol]["forward_div_yield"] = forward_div_yield
+        hold_stocks[symbol]["dividend_cagr"] = dividend_cagr
+    print (f"{decision}, Forward Dividend Yield: {forward_div_yield}%, 5-year Dividend CAGR: {dividend_cagr}%")
 
 # Read symbols from file and populate the list
 symbols_file = 'symbols.txt'
@@ -198,6 +208,6 @@ with open(symbols_file, 'r') as file:
     for line in file:
         symbols.append(line.strip())
 
-recommend_stocks(symbols)
+collect_recommendations(symbols, 10)
 
 

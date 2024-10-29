@@ -1,3 +1,8 @@
+
+10/28/2024
+
+- add a threadpool to run the suggestions faster
+
 08/05/2024
 
 - add suggestion files to have decisions specific to existing positions

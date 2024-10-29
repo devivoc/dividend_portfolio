@@ -1,3 +1,51 @@
+## 10.28.2024
+
+# buy 
+
+HSY
+TDG
+DG
+
+# sell
+
+NTRS
+
+# current positions
+
+CAG
+TROW
+DVN
+PNC
+AMT
+FMC
+BX
+DRI
+AMGN
+EOG
+UPS
+BBY
+EMN
+MOS
+TGT
+INVH
+COP
+PAYX
+CTRA
+ABBV
+PLD
+FANG
+NTRS
+CME
+WRB
+NEE
+FITB
+RF
+HPQ
+SWKS
+MS
+EXR
+TXN
+
 ## 08.05.2024
 
 # buy
