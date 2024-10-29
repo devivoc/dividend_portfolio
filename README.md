@@ -1,5 +1,7 @@
 # dividend_portfolio
 
+*** Disclaimer: This is not financial advice, it is a personal project
+
 Strategy: 
 
 
