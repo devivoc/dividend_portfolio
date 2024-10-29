@@ -2,6 +2,7 @@
 10/28/2024
 
 - add a threadpool to run the suggestions faster
+- archive date-specific files to own folders
 
 08/05/2024
 
