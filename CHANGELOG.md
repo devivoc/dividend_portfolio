@@ -1,3 +1,7 @@
+03/05/2025
+
+- update yfinance to fix rate limiting issues
+- fix date folder archives
 
 10/28/2024
 

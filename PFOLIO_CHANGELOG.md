@@ -1,3 +1,50 @@
+## 03.05.2025
+
+# buy
+
+MCHP
+
+# sell
+
+TDG
+WRB
+
+# positions
+
+FANG
+BX
+MS
+SWKS
+BBY
+CTRA
+NEE
+HSY
+AMGN
+PLD
+TGT
+RF
+EMN
+PAYX
+ABBV
+UPS
+AMT
+EXR
+TXN
+COP
+PNC
+FITB
+TROW
+INVH
+EOG
+DG
+DVN
+MOS
+CAG
+HPQ
+FMC
+CME
+DRI
+
 ## 10.28.2024
 
 # buy 

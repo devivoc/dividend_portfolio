@@ -1,0 +1,44 @@
+# Buy these stocks
+
+MCHP
+
+# Hold these stocks
+
+FANG
+BX
+MS
+SWKS
+BBY
+CTRA
+NEE
+HSY
+AMGN
+PLD
+TGT
+RF
+EMN
+PAYX
+ABBV
+UPS
+AMT
+EXR
+TXN
+COP
+PNC
+FITB
+TROW
+INVH
+EOG
+DG
+DVN
+MOS
+CAG
+HPQ
+FMC
+CME
+DRI
+
+# Sell these stocks
+
+TDG
+WRB

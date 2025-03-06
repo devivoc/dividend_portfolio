@@ -1,5 +1,6 @@
 import yfinance as yf
 from datetime import datetime, timedelta
+from pathlib import Path
 import pytz
 import statistics
 import pandas as pd
@@ -32,8 +33,8 @@ def estimate_forward_dividend_yield(sym):
         div_recent = dividends.iloc[-1]
         forward_dividend_yield = div_recent * div_per_year / current_price
         return forward_dividend_yield * 100
-    except:
-        print(sym, "error")
+    except Exception as e:
+        print(sym, f"Error getting forward yield {e}")
         return 0.0
 
 def get_dividend_count_per_year(dividends):
@@ -92,24 +93,29 @@ def get_dividend_cagr(symbol):
         # roll dividends into a year, includes most recent quarters
         dividend_growth = (recent_div_year / original_div_year) ** (1 / ((len(dividends) - div_per_year)/div_per_year))
         return (dividend_growth - 1) * 100
-    except:
-        print(symbol, "Error")
+    except Exception as e:
+        print(symbol, f"Error calculating dividend cagr: {e}")
         return 0.0
     
-def write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks):
-    with open("buy_stocks.txt", 'w') as buystockFile:
+def write_sell_and_buy(dateFolder: Path, buy_stocks, sell_stocks, hold_stocks):
+
+    buyStocksPath = Path.joinpath(dateFolder, "buy_stocks.txt")
+    sellStocksPath = Path.joinpath(dateFolder, "sell_stocks.txt")
+    holdStocksPath = Path.joinpath(dateFolder, "hold_stocks.txt")
+  
+    with buyStocksPath.open(mode='w') as buystockFile:
         for symbol in buy_stocks:
             buystockFile.write(f"{symbol} - Fdv = {buy_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {buy_stocks[symbol]['dividend_cagr']}%\n")
 
-    with open("sell_stocks.txt", 'w') as sellstockFile:
+    with sellStocksPath.open(mode='w') as sellstockFile:
         for symbol in sell_stocks:
             sellstockFile.write(f"{symbol} - Fdv = {sell_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {sell_stocks[symbol]['dividend_cagr']}%\n")
 
-    with open("hold_stocks.txt", 'w') as holdstockFile:
+    with holdStocksPath.open(mode='w') as holdstockFile:
         for symbol in hold_stocks:
             holdstockFile.write(f"{symbol} - Fdv = {hold_stocks[symbol]['forward_div_yield']}% 5y d CAGR = {hold_stocks[symbol]['dividend_cagr']}%\n")
 
-def suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks):
+def suggest_portfolio_changes(dateFolder: Path, buy_stocks, sell_stocks, hold_stocks):
     with open("current_portfolio.txt", 'r') as current_portfolio_file:
         my_stocks = []
         for stock in current_portfolio_file:
@@ -135,7 +141,8 @@ def suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks):
                              .intersection(hold_stocks.keys())
                              .union(buy_stocks.keys()))
 
-        with open("suggested_changes.txt", 'w') as suggest_file:
+        suggestedChangesFile = Path.joinpath(dateFolder, "suggested_changes.txt")
+        with suggestedChangesFile.open(mode='w') as suggest_file:
             if len(buys) > 0:
                 suggest_file.write("# Buy these stocks\n\n")                
             for buy in buys:
@@ -156,7 +163,8 @@ def suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks):
             for ns in non_stocks:
                 suggest_file.write(f"{ns}\n")
         
-        with open("suggested_portfolio.txt", 'w') as suggest_final:
+        suggestedPortfolioFile = Path.joinpath(dateFolder, "suggested_portfolio.txt")
+        with suggestedPortfolioFile.open(mode='w') as suggest_final:
             new_portfolio = sorted(new_portfolio)
             for s in new_portfolio:
                 suggest_final.write(f"{s}\n")
@@ -165,7 +173,6 @@ def collect_recommendations(symbols, T):
     buy_stocks = {}
     sell_stocks = {}
     hold_stocks = {}
-    task_args = []
     
     with ThreadPoolExecutor(max_workers=T) as executor:
         futures = [ executor.submit(recommend_stock, symbol, buy_stocks, sell_stocks, hold_stocks) for symbol in symbols ]
@@ -173,9 +180,11 @@ def collect_recommendations(symbols, T):
         for future in futures: 
             _ = future.result(timeout=600/T)        
         
+    dateFolder = Path(datetime.now().strftime("%Y-%m-%d"))
+    Path.mkdir(dateFolder, exist_ok=True)
 
-    write_sell_and_buy(buy_stocks, sell_stocks, hold_stocks)
-    suggest_portfolio_changes(buy_stocks, sell_stocks, hold_stocks)
+    write_sell_and_buy(dateFolder, buy_stocks, sell_stocks, hold_stocks)
+    suggest_portfolio_changes(dateFolder, buy_stocks, sell_stocks, hold_stocks)
 
 def recommend_stock(symbol, buy_stocks, sell_stocks, hold_stocks):
   
@@ -208,6 +217,4 @@ with open(symbols_file, 'r') as file:
     for line in file:
         symbols.append(line.strip())
 
-collect_recommendations(symbols, 10)
-
-
+collect_recommendations(symbols, 1)
