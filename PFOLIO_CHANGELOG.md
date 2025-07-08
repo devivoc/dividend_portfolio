@@ -1,3 +1,56 @@
+## 07.07.2025
+
+# buy 
+
+LW
+FAST
+UNH
+
+# sell
+
+EMN
+
+# These stocks left the S&P 500 :(
+
+FMC
+
+# positions
+
+ABBV
+AMGN
+AMT
+BBY
+BX
+CAG
+CME
+COP
+CTRA
+DG
+DRI
+DVN
+EMN
+EOG
+EXR
+FANG
+FITB
+FMC
+HPQ
+HSY
+INVH
+MCHP
+MOS
+MS
+NEE
+PAYX
+PLD
+PNC
+RF
+SWKS
+TGT
+TROW
+TXN
+UPS
+
 ## 03.05.2025
 
 # buy

@@ -1,0 +1,48 @@
+# Buy these stocks
+
+LW
+FAST
+UNH
+
+# Hold these stocks
+
+CME
+UPS
+SWKS
+ABBV
+MS
+TROW
+CAG
+BX
+HSY
+BBY
+EOG
+INVH
+MOS
+DG
+PAYX
+TGT
+CTRA
+TXN
+COP
+FITB
+FANG
+PLD
+RF
+DRI
+DVN
+MCHP
+NEE
+AMGN
+AMT
+EXR
+HPQ
+PNC
+
+# Sell these stocks
+
+EMN
+
+# These stocks left the S&P 500 :(
+
+FMC
