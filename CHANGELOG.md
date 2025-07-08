@@ -1,3 +1,8 @@
+
+07/07/2025
+
+- reiterate updating yfinance fixes rate limiting issue
+
 03/05/2025
 
 - update yfinance to fix rate limiting issues
